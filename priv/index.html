@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Collective</title>
+    <link rel="stylesheet" href="css/foundation.min.css" />
+    <link rel="stylesheet" href="css/collective.css">
+    <script src="js/lib/modernizr.js"></script>
+</head>
+<body>
+    <!-- Main application template -->
+    <script type="text/x-handlebars">
+        <div class="fixed">
+            <nav id="topnav" class="top-bar" data-topbar>
+                <ul class="title-area">
+                    <li class="name">
+                        <a href="#"><img id="logo" src="img/collective.png"></a>
+                    </li>
+                    <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a>
+                </ul>
+
+                <section class="top-bar-section">
+                    <!-- Right Nav Section -->
+                    <ul class="right">
+                        <li class="has-dropdown">
+                            {{#if controllers.node}}
+                                {{#link-to 'node.index' controllers.node}}{{controllers.node.id}}{{/link-to}}
+                            {{else}}
+                                <a href="#">Nodes</a>
+                            {{/if}}
+                            <ul class="dropdown">
+                                {{#each model.nodes}}
+                                    <li>
+                                        {{#link-to 'node.index' this}}{{id}}{{/link-to}}
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </li>
+                        <li class="has-form">
+                            <a href="#" class="button" data-reveal-id="add-node-modal">Add node</a>
+                        </li>
+                    </ul>
+
+                    <!-- Left Nav Section -->
+                    <ul class="left">
+                    <!-- <li><a href="#/processes">Processes</a></li> -->
+                    </ul>
+                </section>
+            </nav>
+        </div>
+            
+        <!-- Show alert bar in case the controller provides an alert message -->
+        {{#if alert}}
+        <div data-alert id="alert" class="alert-box alert">
+            {{alert}}
+            <a href="#" class="close" {{action "closeAlert"}}>&times;</a>
+        </div>
+        {{/if}}
+
+        <!-- Add node dialog -->
+        <div id="add-node-modal" class="reveal-modal tiny" data-reveal data-animation="none">
+            <h2>Connect node</h2>
+            <p>Add a node to Collective. Be careful with live nodes, monitoring may influence system performance.</p>
+            <label>Node
+                {{input placeholder="node name" value=newNodeName}}
+            </label>
+            <label>Cookie
+                {{input placeholder="magic cookie" value=newNodeCookie action="addNode"}}
+            </label>
+            <button class="right" {{action addNode}}>Add node</button>
+        </div>
+        
+        <div id="main">
+            {{outlet}}
+        </div>
+    </script>
+    
+    <!-- Nodes overview template -->
+    <script type="text/x-handlebars" data-template-name="nodes">
+        <div class="row content">
+            {{#each}}
+            <div class="large-4 columns">
+                {{#link-to 'node.index' this}}<h2>{{id}}</h2>{{/link-to}}
+                <div class="node-summary">
+                    Release {{release}} <br>
+                    Compiled for {{architecture}} <br>
+                    SMP support: {{smp}} <br>
+                    {{cpus}} logical processors <br>
+                    {{schedulers}} schedulers <br>
+                    {{threads}} async threads <br>
+                </div>
+            </div>
+            {{/each}}
+        </div>  
+    </script>
+
+    <!-- Node template -->
+    <script type="text/x-handlebars" data-template-name="node">
+        <dl class="sub-nav fixed">
+            <dd>{{#link-to 'node.graph' this}}Overview{{/link-to}}</dd>
+            <dd>{{#link-to 'node.processes' this}}Processes{{/link-to}}</dd>
+        </dl>
+        {{outlet}} 
+    </script>
+    
+    <!-- Node graph template -->
+    <script type="text/x-handlebars" data-template-name="node/graph">
+        {{!view Ember.Checkbox checkedBinding="showMonitors"}} 
+
+        <div id="graph">
+            {{node-graph data=chartData}}
+        </div>
+    </script>
+    
+    <!-- Node process table template -->
+    <script type="text/x-handlebars" data-template-name="node/processes">
+        <div class="row content">
+            <div class="large-12 columns">
+                <ul class="pagination">
+                    <li class="arrow"><a {{action "selectPage" previousPage}}>&laquo;</a></li>
+                    {{#each pages}}
+                        {{#if current}} 
+                            <li class="current"><a {{action "selectPage" id}}>{{id}}</a></li>
+                        {{else}}
+                            <li><a {{action "selectPage" id}}>{{id}}</a></li>
+                        {{/if}}
+                    {{/each}}
+                    <li class="arrow"><a {{action "selectPage" nextPage}}>&raquo;</a></li>
+                </ul>
+
+
+                <table class="process-table">
+                    <thead>
+                        <tr>
+                            <th width="12%"><a {{action 'sortBy' 'id' true}}>Pid</a></th>
+                            <th width="18%"><a {{action 'sortBy' 'name' true}}>Name</a></th>
+                            <th><a {{action 'sortBy' 'initial_fun' true}}>Initial function</a></th>
+                            <th><a {{action 'sortBy' 'current_fun' true}}>Current function</a></th>
+                            <th width="9%"><a {{action 'sortBy' 'reds_delta' false}}>Red</a></th>
+                            <th width="9%"><a {{action 'sortBy' 'memory' false}}>Mem</a></th>
+                            <th width="7%"><a {{action 'sortBy' 'msgq' false}}>MsgQ</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each paginatedContent}}
+                        <tr>
+                            <td>{{id}}</td>
+                            <td>{{name}}</td>
+                            <td>{{initial_fun}}</td>
+                            <td>{{current_fun}}</td>
+                            <td>{{reds_delta}}</td>
+                            <td>{{memory}}</td>
+                            <td>{{msgq}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {{outlet}} 
+    </script>
+    
+    <script src="js/lib/jquery-2.1.1.js"></script>
+    <script src="js/lib/handlebars-1.1.2.js"></script>
+    <script src="js/lib/ember-debug-1.5.1.js"></script> 
+    <script src="js/lib/foundation-5.3.0.js"></script>
+    <script src="js/lib/d3.js"></script>
+    <script src="js/lib/d3.tip.js"></script>
+    <script src="js/collective.js"></script>
+    <script src="js/collective-router.js"></script>
+    <script src="js/collective-socket.js"></script>
+    <script src="js/mixins/pagination.js"></script>
+    <script src="js/models/node.js"></script>
+    <script src="js/models/process.js"></script>
+    <script src="js/views/application.js"></script>
+    <script src="js/controllers/application.js"></script>
+    <script src="js/controllers/nodes.js"></script>
+    <script src="js/controllers/node.js"></script>
+    <script src="js/controllers/node-graph.js"></script>
+    <script src="js/controllers/node-processes.js"></script>
+    <script src="js/components/node-graph.js"></script>
+</body>
+</html>

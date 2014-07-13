@@ -1,0 +1,231 @@
+body, html {
+    height: 100%;
+    background: #1e1e1e url('/img/bg.jpg') no-repeat fixed center center; 
+    color: #ddd;
+    -webkit-font-smoothing: antialiased;
+}
+
+#main, p, div, button, a.button {
+    font-size: 14px;
+    line-height: 17px;
+}
+
+#alert {
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 100;
+}
+
+div.content {
+    padding-top: 50px;
+}
+
+h1, h2 {
+    color: #39c;
+}
+h1 {
+    margin-top: 20px;
+    font-size: 1.8rem;
+}
+h2 {
+    font-size: 1.3rem;
+}
+hr {
+    border-color: #4D4B48;
+    margin: 6px 0 12px 0;
+}
+
+/* links */
+a, a:hover {
+    color: #39c;
+}
+
+/* forms */
+select, select:hover {
+    font-size: 13px;
+    line-height: 18px;
+    padding: 2px;
+    height: 24px;
+    border-color: #4D4B48;
+    color: #ddd; 
+    background-color: transparent;
+}
+select:hover {
+    border-color: #ddd;
+    cursor: pointer;
+}
+
+/* tables */
+table {
+    border: none;
+    border-collapse: collapse;
+}
+table thead tr th {
+    color: #ddd;
+}
+table tr td, table tr th {
+    padding: 0 10px 10px 10px;
+    color: #ddd;
+}
+table tr {
+    background-color: #111;   
+}
+table tr.even, table tr.alt, table tr:nth-of-type(even) {
+    background-color: #111;   
+}
+
+/* nav bar */
+nav.top-bar {
+    background-color: #0e0e0e;
+    border-bottom: 1px solid #4D4B48;
+    color: #b8b6b4;
+    z-index: 500;
+}
+nav.top-bar.expanded ul {
+    background-color: #0e0e0e;
+}
+.top-bar-section li:not(.has-form) a:not(.button),
+.top-bar-section ul li {
+    background: transparent;
+}
+.top-bar-section li.has-form {
+    background: transparent;
+    padding: 0px 8px;
+    height: 45px;
+}
+#logo {
+    margin: 15px;
+}
+.sub-nav {
+    top: 55px;
+    left: 20px;
+}
+.sub-nav dd {
+    margin-left:0.2rem; 
+}
+.sub-nav dd a {
+    font-size: 12px;
+}
+.sub-nav dd a.active {
+    border-radius: 3px;
+    background: #39c;
+    padding: 0.1875rem 1rem;
+    font-size: 12px;
+    cursor: default;
+    color: #fff
+}
+
+/* modals */
+.reveal-modal {
+    color: #4d4d4d;
+}
+
+/* buttons */
+button, .button {
+    padding: 10px 13px 10px 13px;
+}
+
+/* node overview */
+div.node-summary {
+    border-bottom: 4px solid #39c;
+    padding: 12px; 
+    background-color: #222;
+}
+
+/* node graph */
+div.graph-info.north-west {
+    width: 15%;
+    position: fixed;
+    top: 140px;
+    left: 10px;
+}
+
+/* process table */
+table.process-table {
+    padding-bottom: 0.6rem;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+table.process-table td {
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 100px;
+
+    overflow: hidden;
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+}
+
+
+/* SVG styles */
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.plink {
+    fill: none;
+    stroke: #666;
+    stroke-width: 1.5px;
+}
+
+.plink.link { stroke: #b918ad; }
+#pmarker-link { fill: #b918ad; }
+
+.plink.monitor { stroke: #19aeb9; }
+#pmarker-monitor { fill: #19aeb9; } 
+
+.plink.message { stroke: #5eb918; stroke-dasharray: 0,2 1; }
+#pmarker-message { fill: #5eb918; }
+
+circle {
+  fill: #ccc;
+  stroke: #999;
+  stroke-width: 1px;
+}
+
+.pprocess { stroke: #4D4B48; fill: #444; }
+.pprocess.tx { stroke: #b918ad; }
+.pprocess.group_leader { stroke: #fff; }
+
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+  fill: #fff;
+  text-shadow: 0 1px 0 #000, 1px 0 0 #000, 0 -1px 0 #000, -1px 0 0 #000;
+}
+
+.d3-tip {
+  padding: 12px;
+  font-size: 13px;
+  line-height: 18px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border: 1px solid #4D4B48;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 14px;
+  width: 100%;
+  line-height: 1;
+  color: #4D4B48;
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+.d3-tip.n:after {
+  margin: -2px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+
+
